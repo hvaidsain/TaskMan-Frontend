@@ -20,7 +20,7 @@ class Navbar extends Component {
     return (
       <nav>
         <div className="nav-wrapper black lighten-2">
-          <a href="#" className="brand-logo center">
+          <a href="#" className="brand-logo right">
             TASKMAN
           </a>
           <NavLink

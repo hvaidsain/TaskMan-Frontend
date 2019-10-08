@@ -3,15 +3,20 @@ import axios from "axios";
 import { base_url } from "../assets/baseUrl";
 
 export const loginApi = async credentials => {
-  const response = await fetch(`${base_url}/admin/login`, {
-    method: "POST",
-    headers: {
-      "content-type": "application/json"
-    },
-    body: JSON.stringify(credentials)
-  });
+  try {
+    const response = await fetch(`${base_url}/admin/login`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json"
+      },
+      body: JSON.stringify(credentials)
+    });
 
-  return response.json();
+    return response.json();
+  } catch (e) {
+    console.log(e);
+    alert("something went wrong");
+  }
 };
 
 // export const login = async credentials => {

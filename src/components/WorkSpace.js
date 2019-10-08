@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { getAllWorkspace } from "../actions/workspace";
 import { Link } from "react-router-dom";
+import { relative } from "path";
 
 class WorkSpace extends Component {
   state = {
@@ -45,7 +46,10 @@ class WorkSpace extends Component {
         </div>
         {displayWorkspace}
         <div className="row justify-content-center">
-          <div className="col-sm-1.5">
+          <div
+            // className="col-sm-2"
+            style={{ position: "relative", marginLeft: 10 }}
+          >
             <Link to="/workspace/new" className="btn btn-secondary">
               Add New workspace
             </Link>

@@ -44,7 +44,7 @@ class Team extends Component {
             </table>
 
             <div className="row justify-content-center">
-              <div className="col-sm-1.5">
+              <div className="col-sm-2">
                 <Link to="/teams/new" className="btn btn-primary">
                   Add New Team
                 </Link>

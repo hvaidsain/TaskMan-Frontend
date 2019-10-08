@@ -95,7 +95,7 @@ class TaskList extends Component {
             </table>
 
             <div className="row justify-content-center">
-              <div className="col-sm-1.5">
+              <div className="col-sm-2">
                 <Link
                   to={`/tasks/new/${this.state.projectId}`}
                   className="btn btn-primary"

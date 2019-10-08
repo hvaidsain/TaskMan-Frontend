@@ -14,7 +14,7 @@ class Login extends Component {
     password: ""
   };
 
-  componentDidMount() {}
+  // componentDidMount() {}
 
   handleChange = event => {
     this.setState({

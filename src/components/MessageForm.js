@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { addMessageApi } from "../api/message";
+import { getUser } from "../api/storage";
 
 export default class MessageForm extends Component {
   state = {
@@ -17,13 +18,19 @@ export default class MessageForm extends Component {
 
   handleSubmit = async event => {
     event.preventDefault();
+    const user = getUser();
     const message = { message: this.state.message };
     console.log(message);
 
     const sentMesssage = await addMessageApi(message, this.state.id);
 
-    alert(sentMesssage.message);
-    this.props.history.push("/projects");
+    alert("Message sent", sentMesssage.message);
+
+    if (user.isAdmin) {
+      this.props.history.push("/projects");
+    } else {
+      this.props.history.push("/endusers/message");
+    }
   };
 
   handleChange = event => {
@@ -58,9 +65,10 @@ export default class MessageForm extends Component {
                 <button type="submit" className="btn btn-primary mr-2">
                   Submit
                 </button>
-                <Link className="btn btn-warning" to="/projects">
+
+                {/* <Link className="btn btn-warning" to="/projects">
                   Cancel
-                </Link>
+                </Link> */}
               </form>
             </div>
           </div>

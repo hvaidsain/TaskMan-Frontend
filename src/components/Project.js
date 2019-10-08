@@ -57,7 +57,10 @@ class Project extends Component {
             </table>
 
             <div className="row justify-content-center">
-              <div className="col-sm-1.5">
+              <div
+                className="col-sm-2"
+                style={{ position: "relative", marginRight: 70 }}
+              >
                 <Link to="/project/new" className="btn btn-primary">
                   Add New Project
                 </Link>

@@ -53,7 +53,11 @@ class Users extends Component {
 
             <div className="row justify-content-center">
               <div className="col-sm-2">
-                <Link to="/users/new" className="btn btn-primary">
+                <Link
+                  to="/users/new"
+                  className="btn btn-primary"
+                  style={{ position: "relative", marginLeft: 50 }}
+                >
                   Add User
                 </Link>
               </div>

@@ -32,11 +32,15 @@ export default class WorkspaceProjects extends Component {
         {/* <td className="text-center">{item.flag}</td>
         <td className="text-center">{item.priority}</td> */}
         <td className="text-center">
-          <div className="btn-group btn-group-sm">
+          <div className="btn-group btn-group mr-2">
             <Link className="btn btn-primary" to={`/projects/${item._id}`}>
               View Tasks
             </Link>
-            <button className="btn btn-warning">Delete</button>
+          </div>
+          <div className="btn-group btn-group mr-2">
+            <Link className="btn btn-secondary" to={`/message/new/${item._id}`}>
+              Post Message
+            </Link>
           </div>
         </td>
       </tr>

@@ -12,7 +12,6 @@ class EndUserDashBoard extends Component {
     const user = getUser();
     console.log(user);
     this.getUserTasks(user._id);
-    // "5d9a45c684658613370651d4"
   }
 
   async getUserTasks(id) {
@@ -115,8 +114,6 @@ class EndUserDashBoard extends Component {
                   {/* <th className="text-center">Assigned To</th> */}
 
                   <th className="text-center">Perform Actions</th>
-
-                  {/* <th></th> */}
                 </tr>
               </thead>
               <tbody>{this.renderTasks(tasks)}</tbody>
