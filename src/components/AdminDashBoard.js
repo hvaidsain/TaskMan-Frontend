@@ -1,9 +1,14 @@
 import React, { Component } from "react";
-import { NavLink } from "react-router-dom";
-import Navbar from "./Navbar";
 import WorkSpace from "./WorkSpace";
+import { getAllUsers } from "../actions/users";
+import { getTeams } from "../actions/team";
+import { connect } from "react-redux";
 
 class AdminDashBoard extends Component {
+  componentDidMount() {
+    this.props.dispatch(getAllUsers());
+    this.props.dispatch(getTeams());
+  }
   render() {
     return (
       <React.Fragment>
@@ -13,4 +18,4 @@ class AdminDashBoard extends Component {
   }
 }
 
-export default AdminDashBoard;
+export default connect()(AdminDashBoard);

@@ -1,22 +1,17 @@
 import React, { Component } from "react";
-import { getAllUsers } from "../actions/users";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { getTeams } from "../actions/team";
 
-class Users extends Component {
+class Team extends Component {
   componentDidMount() {
-    this.props.dispatch(getAllUsers());
+    this.props.dispatch(getTeams());
   }
-  renderUsers(users) {
-    const endUsers = users.filter(item => {
-      return item.isAdmin == false;
-    });
-    return endUsers.map(item => (
+  renderTeams(teams) {
+    return teams.map(item => (
       <tr key={item._id}>
         <td className="text-center">{item.name}</td>
-        <td className="text-center">{item.email}</td>
-        <td className="text-center">{item.teamId.name}</td>
-
+        <td className="text-center">{item.workspace.name}</td>
         {/* <td className="text-center">
           <div className="btn-group btn-group-sm">
             <button className="btn btn-warning">Delete</button>
@@ -25,13 +20,12 @@ class Users extends Component {
       </tr>
     ));
   }
-
   render() {
-    const users = this.props.users;
+    console.log(this.props);
     return (
       <div className="row">
         <div className="col-md-12">
-          <h3 className="text-center">USERS</h3>
+          <h3 className="text-center">Teams</h3>
           <hr />
 
           <br />
@@ -39,22 +33,20 @@ class Users extends Component {
             <table className="table table-bordered " responsive="md">
               <thead>
                 <tr>
-                  <th className="text-center">User Name</th>
-                  <th className="text-center">Email</th>
                   <th className="text-center">Team Name</th>
-
+                  <th className="text-center">Workspace Name</th>
                   {/* <th className="text-center">Perform Actions</th> */}
 
                   {/* <th></th> */}
                 </tr>
               </thead>
-              <tbody>{this.renderUsers(users)}</tbody>
+              <tbody>{this.renderTeams(this.props.teams)}</tbody>
             </table>
 
             <div className="row justify-content-center">
-              <div className="col-sm-2">
-                <Link to="/users/new" className="btn btn-primary">
-                  Add User
+              <div className="col-sm-1.5">
+                <Link to="/teams/new" className="btn btn-primary">
+                  Add New Team
                 </Link>
               </div>
             </div>
@@ -64,11 +56,10 @@ class Users extends Component {
     );
   }
 }
-
 function mapStateToProps(state) {
   return {
-    users: state.users
+    teams: state.teams
   };
 }
 
-export default connect(mapStateToProps)(Users);
+export default connect(mapStateToProps)(Team);

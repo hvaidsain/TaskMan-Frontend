@@ -24,9 +24,13 @@ class WorkSpace extends Component {
             <div className="card text-center">
               <div className="card-body">
                 <h5 className="card-title">{item.name}</h5>
-                <a href="#" className="btn sm btn-primary">
+                {/* id is workspace id */}
+                <Link
+                  className="btn btn-primary"
+                  to={`/workspace/projects/${item._id}`}
+                >
                   View Projects
-                </a>
+                </Link>
               </div>
             </div>
           </div>

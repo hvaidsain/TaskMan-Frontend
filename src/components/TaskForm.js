@@ -1,15 +1,37 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { addProjectApi } from "../api/project";
+import { addTaskApi } from "../api/task";
+import { getUsersOfTeam } from "../api/user";
 
-class ProjectForm extends Component {
+class TaskForm extends Component {
   state = {
     name: "",
     priority: 1,
-    teamId: "",
-    workspace: ""
+    projectId: "",
+    startTime: "",
+    endTime: "",
+    userId: "",
+    teamMembers: []
   };
+
+  componentDidMount() {
+    const id = this.props.match.params.id;
+    console.log(id);
+    this.getTeamMembers(id);
+    // this.setState({
+    //   projectId: id
+    // });
+  }
+  async getTeamMembers(id) {
+    try {
+      const teamMembers = await getUsersOfTeam(id);
+      this.setState({ teamMembers: teamMembers, projectId: id });
+    } catch (e) {
+      console.log("Get team-members failed.");
+      console.log("Error:", e);
+    }
+  }
 
   handleChange = event => {
     this.setState({
@@ -19,19 +41,27 @@ class ProjectForm extends Component {
 
   handleSubmit = async event => {
     event.preventDefault();
-    const project = { ...this.state };
-    await addProjectApi(project);
-    this.props.history.push(`/projects`);
+    const task = {
+      name: this.state.name,
+      priority: this.state.priority,
+      projectId: this.state.projectId,
+      startTime: this.state.startTime,
+      endTime: this.state.endTime,
+      userId: this.state.userId
+    };
+    await addTaskApi(task);
+    this.props.history.push(`/projects/${this.state.projectId}`);
   };
 
   render() {
-    const { name, priority, teamId, workspace } = this.state;
     console.log(this.state);
-    console.log(this.props);
+    const { name, priority, startTime, endTime, userId } = this.state;
+    console.log(this.props.users);
+
     return (
       <article className="mw6  center bg-white shadow-5 br3 pa3 pa4-ns mv3 ba b--black-10">
         <div>
-          <h3>Add Project</h3>
+          <h3>Add Task</h3>
           <hr />
           <div className="card bg-light">
             <div className="card-body">
@@ -43,7 +73,7 @@ class ProjectForm extends Component {
                     className="form-control"
                     id="name"
                     name="name"
-                    placeholder="Enter Project name"
+                    placeholder="Enter Task name"
                     value={name}
                     onChange={this.handleChange}
                   />
@@ -61,31 +91,40 @@ class ProjectForm extends Component {
                   />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="category">Team</label>
-                  <select
+                  <label htmlFor="name">StartTime</label>
+                  <input
+                    type="date"
                     className="form-control"
-                    id="teamId"
-                    name="teamId"
-                    value={teamId}
+                    id="startTime"
+                    name="startTime"
+                    // placeholder="YYYY-MM-DD"
+                    value={startTime}
                     onChange={this.handleChange}
-                  >
-                    <option value="">- Select -</option>
-                    {this.props.teams.map(item => (
-                      <option value={item._id}>{item.name}</option>
-                    ))}
-                  </select>
+                  />
                 </div>
                 <div className="form-group">
-                  <label htmlFor="category">Workspace</label>
+                  <label htmlFor="name">EndTime</label>
+                  <input
+                    type="date"
+                    className="form-control"
+                    id="endTime"
+                    name="endTime"
+                    // placeholder="YYYY-MM-DD"
+                    value={endTime}
+                    onChange={this.handleChange}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="category">Users</label>
                   <select
                     className="form-control"
-                    id="workspace"
-                    name="workspace"
-                    value={workspace}
+                    id="userId"
+                    name="userId"
+                    value={userId}
                     onChange={this.handleChange}
                   >
                     <option value="">- Select -</option>
-                    {this.props.workspaces.map(item => (
+                    {this.state.teamMembers.map(item => (
                       <option value={item._id}>{item.name}</option>
                     ))}
                   </select>
@@ -93,7 +132,10 @@ class ProjectForm extends Component {
                 <button type="submit" className="btn btn-primary mr-2">
                   Submit
                 </button>
-                <Link className="btn btn-warning" to={`/projects`}>
+                <Link
+                  className="btn btn-warning"
+                  to={`/projects/${this.state.projectId}`}
+                >
                   Cancel
                 </Link>
               </form>
@@ -107,9 +149,8 @@ class ProjectForm extends Component {
 
 function mapStateToProps(state) {
   return {
-    workspaces: state.workspaces,
-    teams: state.teams
+    users: state.users
   };
 }
 
-export default connect(mapStateToProps)(ProjectForm);
+export default connect(mapStateToProps)(TaskForm);

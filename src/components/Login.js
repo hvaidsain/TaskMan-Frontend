@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import { saveUserInfo } from "../api/storage";
 import { loginUser } from "../actions/auth";
 import { connect } from "react-redux";
-import "./login.css";
+import { getUser } from "../api/storage";
+
+import "../assets/login.css";
 
 // import { Form, Icon, Input, Button } from "antd";
 
@@ -26,14 +28,19 @@ class Login extends Component {
 
     await this.props.dispatch(loginUser(credentials)).then(done => {});
 
-    if (this.props.auth.token) {
+    saveUserInfo(this.props.auth);
+
+    const user = getUser();
+    console.log(user);
+
+    if (user.isAdmin) {
       this.props.history.push("/admindashboard");
+    } else if (!user.isAdmin) {
+      this.props.history.push("/endusers/tasks");
     } else {
       alert("Incorrect email or Password");
       return;
     }
-
-    saveUserInfo(this.props.auth);
   };
 
   render() {

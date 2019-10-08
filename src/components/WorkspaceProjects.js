@@ -1,11 +1,27 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { getProjects } from "../actions/project";
+import { getProjectByWorkspaceApi } from "../api/project";
 import { Link } from "react-router-dom";
 
-class Project extends Component {
+export default class WorkspaceProjects extends Component {
+  state = {
+    projects: []
+  };
+
   componentDidMount() {
-    this.props.dispatch(getProjects());
+    const id = this.props.match.params.id;
+    this.getProjects(id);
+  }
+
+  async getProjects(id) {
+    try {
+      const projects = await getProjectByWorkspaceApi(id);
+      this.setState({
+        projects: projects
+      });
+    } catch (e) {
+      console.log("Get team-members failed.");
+      console.log("Error:", e);
+    }
   }
 
   renderProjects(projects) {
@@ -16,15 +32,11 @@ class Project extends Component {
         {/* <td className="text-center">{item.flag}</td>
         <td className="text-center">{item.priority}</td> */}
         <td className="text-center">
-          <div className="btn-group btn-group mr-2">
+          <div className="btn-group btn-group-sm">
             <Link className="btn btn-primary" to={`/projects/${item._id}`}>
               View Tasks
             </Link>
-          </div>
-          <div className="btn-group btn-group mr-2">
-            <Link className="btn btn-secondary" to={`/message/new/${item._id}`}>
-              Post Message
-            </Link>
+            <button className="btn btn-warning">Delete</button>
           </div>
         </td>
       </tr>
@@ -32,7 +44,7 @@ class Project extends Component {
   }
 
   render() {
-    const projects = this.props.projects;
+    const projects = this.state.projects;
     return (
       <div className="row">
         <div className="col-md-12">
@@ -69,12 +81,3 @@ class Project extends Component {
     );
   }
 }
-
-function mapStateToProps(state) {
-  return {
-    projects: state.projects,
-    auth: state.auth
-  };
-}
-
-export default connect(mapStateToProps)(Project);
